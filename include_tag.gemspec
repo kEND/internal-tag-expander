@@ -1,11 +1,11 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "internal_tag_expander/version"
+require "include_tag/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "internal_tag_expander"
-  spec.version       = InternalTagExpander::VERSION
+  spec.name          = "include_tag"
+  spec.version       = IncludeTag::VERSION
   spec.authors       = ["Ken Barker"]
   spec.email         = ["ken.barker@gmail.com"]
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    internal_tag_expander (0.1.0)
+    include_tag (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -16,7 +16,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 1.16)
-  internal_tag_expander!
+  include_tag!
   minitest (= 5.10.3)
   purdytest
   rake (~> 10.0)
