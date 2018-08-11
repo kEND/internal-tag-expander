@@ -6,5 +6,13 @@ module IncludeTag
     def initialize(file)
       @lines = File.readlines(file)
     end
+
+    def content
+      @lines.join
+    end
+
+    def include_tag?(line)
+      /^\[\[include:(.+)\]\]/.match?(line)
+    end
   end
 end
