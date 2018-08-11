@@ -10,6 +10,6 @@ class IncludeTagTest < Minitest::Test
   end
 
   def test_expander_lines_should_return_real_lines_from_file
-    assert_equal "[[include:gift-acceptance-policy/gap-title]]\n", @expander.lines[0]
+    assert_equal "[[include:manual/title]]\n", @expander.lines[0]
   end
 end
