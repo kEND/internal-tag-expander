@@ -1,12 +1,15 @@
 require "test_helper"
 
 class IncludeTagTest < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::IncludeTag::VERSION
+  def setup
+    @expander = IncludeTag::Expander.new("test/fixtures/sample.md")
   end
 
-  def test_ask_returns_an_answer
-    expander = IncludeTag::Expander.new
-    assert expander.ask("whatever") != nil
+  def test_expander_lines_should_return_array
+    assert_instance_of Array, @expander.lines 
+  end
+
+  def test_expander_lines_should_return_real_lines_from_file
+    assert_equal "[[include:gift-acceptance-policy/gap-title]]\n", @expander.lines[0]
   end
 end
