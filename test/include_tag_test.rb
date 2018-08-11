@@ -29,6 +29,10 @@ class IncludeTagTest < Minitest::Test
     refute @expander.include_tag?(@expander.lines[3])
   end
 
+  def test_expander_should_build_viable_path_when_processing_an_include_tag
+    assert_equal "text/fixtures/baller/round.md", @expander.path_to_file("[[include:baller/round]]\n")
+  end
+
   def test_expander_content_should_match_target
     skip
     assert_equal File.read("test/fixtures/manual.md"), @expander.content
