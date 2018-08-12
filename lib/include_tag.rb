@@ -17,12 +17,7 @@ module IncludeTag
     end
 
     def reset_headings(content, top_level)
-      top_level.empty? ? content : content + " top_level not empty!!"
-      if top_level.empty?
-        content
-      else
-        content.split("\n").map {|line| line.gsub(/(#+)/,"#{top_level}"+'\1')}.join("\n")
-      end
+      top_level.empty? ? content : content.gsub(/(#+)/,"#{top_level}"+'\1')
     end
 
     def content_and_top_level_from(line)
