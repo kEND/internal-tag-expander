@@ -1,4 +1,4 @@
 [[include:manual/title]]
 [[include:manual/introduction]]
-[[include:../other/manual/body]]
+[[include[###]:../other/manual/body]]
 

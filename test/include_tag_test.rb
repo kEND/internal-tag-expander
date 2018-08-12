@@ -1,4 +1,5 @@
 require "test_helper"
+require "pry"
 
 class IncludeTagTest < Minitest::Test
   def setup
@@ -45,6 +46,14 @@ class IncludeTagTest < Minitest::Test
   def test_expander_should_read_from_file_at_include_tag
     test_file_contents = File.read("test/fixtures/manual/introduction.md")
     assert_equal test_file_contents, @expander.convert_tag_to_content("[[include:manual/introduction]]\n")
+  end
+
+  def test_should_reset_headings_returns_original_content_if_no_top_level
+    assert_equal "## you are awesome", @expander.reset_headings("## you are awesome","")
+  end
+
+  def test_should_reset_headings_if_top_level
+    assert_equal "#### you are awesome", @expander.reset_headings("## you are awesome","##")
   end
 
   def test_expander_content_should_match_target

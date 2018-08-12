@@ -12,8 +12,17 @@ module IncludeTag
 
     def content
       @lines.map do |line|
-        [content_and_top_level_from(line)]
-      end.map {|content, top_level| content}.join
+        content_and_top_level_from(line)
+      end.map {|content, top_level| reset_headings(content, top_level)}.join
+    end
+
+    def reset_headings(content, top_level)
+      top_level.empty? ? content : content + " top_level not empty!!"
+      if top_level.empty?
+        content
+      else
+        content.split("\n").map {|line| line.gsub(/(#+)/,"#{top_level}"+'\1')}.join("\n")
+      end
     end
 
     def content_and_top_level_from(line)
