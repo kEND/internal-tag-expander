@@ -29,8 +29,12 @@ class IncludeTagTest < Minitest::Test
     refute @expander.include_tag?(@expander.lines[3])
   end
 
+  def test_expander_should_recognize_base_path_of_input_file
+    assert_equal Pathname.new("test/fixtures/sample.md"), @expander.path_to_manifest
+  end
+
   def test_expander_should_build_viable_path_when_processing_an_include_tag
-    assert_equal "text/fixtures/baller/round.md", @expander.path_to_file("[[include:baller/round]]\n")
+    assert_equal Pathname.new("test/fixtures/baller/round.md"), @expander.convert_tag_to_path("[[include:baller/round]]\n")
   end
 
   def test_expander_content_should_match_target
