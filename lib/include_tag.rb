@@ -25,7 +25,8 @@ module IncludeTag
     end
 
     def convert_tag_to_content(line)
-      File.read(convert_tag_to_path(line))
+      path = convert_tag_to_path(line)
+      path.exist? ? File.read(path) : line.strip + 'NO FILE'
     end
 
     def path_to_manifest
