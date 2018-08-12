@@ -12,16 +12,28 @@ module IncludeTag
 
     def content
       @lines.map do |line|
-        include_tag?(line) ? convert_tag_to_content(line) : line.strip
-      end.join
+        [content_and_top_level_from(line)]
+      end.map {|content, top_level| content}.join
+    end
+
+    def content_and_top_level_from(line)
+      if match = include_tag?(line)
+        content, top_level = convert_tag_to_content(line), match[1]
+      else
+        content, top_level = line.strip, ""
+      end
+    end
+
+    def include_tag_pattern
+      /^\[\[include\[?(#*)\]?:(.+)\]\]/
     end
 
     def include_tag?(line)
-      /^\[\[include:(.+)\]\]/.match?(line)
+      include_tag_pattern.match(line)
     end
 
     def convert_tag_to_path(line)
-      @dir + line.gsub(/\[\[include:(.+)\]\]/,'\1.md').strip
+      @dir + line.gsub(include_tag_pattern,'\2.md').strip
     end
 
     def convert_tag_to_content(line)
