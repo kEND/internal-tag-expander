@@ -15,7 +15,7 @@ module IncludeTag
     def content
       @lines.map do |line|
         process_each_line(line)
-      end.flatten.join("\n")
+      end.flatten.join("\n").gsub(/\n\n\n+/,"\n\n")
     end
 
     def reset_headings(content)
@@ -25,20 +25,33 @@ module IncludeTag
     def process_each_line(line)
       # given a line, any line
       # test if setting top_level
-      # yes:  set top_level destroy line
+      if match = next_nest_tag?(line)
+        @top_level = match[1]
+        line = nil
+      end
       # test if clearing top_level
       # yes:  set top_level = nil destroy line
-
+      if clear_top_level_tag?(line)
+        @top_level = nil
+        line = nil
+      end
+      #
       # test if line is an include_tag
       if match = include_tag?(line)
-        convert_tag_to_content(line).split("\n").map{|ln| process_each_line(ln)}
+        content = convert_tag_to_content(line).split("\n").map{|ln| process_each_line(ln)}.join("\n")
+        reset_headings(content)
       else 
         line
       end
-      # flatten
     end
 
+    def next_nest_tag?(line)
+      /^\[\/\/\]:\s+nest_next_(#+)/.match(line)
+    end
 
+    def clear_top_level_tag?(line)
+      line =~ /^\[\/\/\]:\s+clear_top_level/
+    end
 
     def include_tag_pattern
       /^\[\[include:(.+)\]\]/
