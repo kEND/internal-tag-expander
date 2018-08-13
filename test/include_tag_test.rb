@@ -16,7 +16,7 @@ class IncludeTagTest < Minitest::Test
 
   def test_include_tag_should_match_gollum_include_tags
     assert @expander.include_tag?("[[include:blah-blah]]\n")
-    assert @expander.include_tag?("[[include[##]:blah-blah]]\n")
+    refute @expander.include_tag?("[[include[##]:blah-blah]]\n")
   end
 
   def test_include_tag_should_not_match_other_lines
@@ -35,10 +35,6 @@ class IncludeTagTest < Minitest::Test
     assert_equal Pathname.new("test/fixtures/sample.md"), @expander.path_to_manifest
   end
 
-  def test_expander_should_return_content_and_top_level_from_line
-    assert_equal ["[[include[###]:baller/round]]NO FILE", "###"], @expander.content_and_top_level_from("[[include[###]:baller/round]]\n")
-  end
-
   def test_expander_should_build_viable_path_when_processing_an_include_tag
     assert_equal Pathname.new("test/fixtures/baller/round.md"), @expander.convert_tag_to_path("[[include:baller/round]]\n")
   end
@@ -49,11 +45,12 @@ class IncludeTagTest < Minitest::Test
   end
 
   def test_should_reset_headings_returns_original_content_if_no_top_level
-    assert_equal "## you are awesome", @expander.reset_headings("## you are awesome","")
+    assert_equal "## you are awesome", @expander.reset_headings("## you are awesome")
   end
 
   def test_should_reset_headings_if_top_level
-    assert_equal "#### you are awesome", @expander.reset_headings("## you are awesome","##")
+    @expander.top_level = "##"
+    assert_equal "#### you are awesome", @expander.reset_headings("## you are awesome")
   end
 
   def test_expander_content_should_match_target

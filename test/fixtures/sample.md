@@ -1,4 +1,8 @@
 [[include:manual/title]]
 [[include:manual/introduction]]
-[[include[###]:../other/manual/body]]
+
+[//]: nest_next_###
+[[include:../other/manual/body]]
+
+[//]: clear_top_level
 

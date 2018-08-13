@@ -5,6 +5,7 @@ module IncludeTag
   class Expander
     attr_accessor :lines
     attr_accessor :dir, :base
+    attr_accessor :top_level
 
     def initialize(file)
       @dir, @base = Pathname.new(file).split
@@ -13,24 +14,34 @@ module IncludeTag
 
     def content
       @lines.map do |line|
-        content_and_top_level_from(line)
-      end.map {|content, top_level| reset_headings(content, top_level)}.join
+        process_each_line(line)
+      end.flatten.join("\n")
     end
 
-    def reset_headings(content, top_level)
-      top_level.empty? ? content : content.gsub(/(#+)/,"#{top_level}"+'\1')
+    def reset_headings(content)
+      @top_level.to_s.empty? ? content : content.gsub(/(#+)/,"#{@top_level}"+'\1')
     end
 
-    def content_and_top_level_from(line)
+    def process_each_line(line)
+      # given a line, any line
+      # test if setting top_level
+      # yes:  set top_level destroy line
+      # test if clearing top_level
+      # yes:  set top_level = nil destroy line
+
+      # test if line is an include_tag
       if match = include_tag?(line)
-        content, top_level = convert_tag_to_content(line), match[1]
-      else
-        content, top_level = line.strip, ""
+        convert_tag_to_content(line).split("\n").map{|ln| process_each_line(ln)}
+      else 
+        line
       end
+      # flatten
     end
+
+
 
     def include_tag_pattern
-      /^\[\[include\[?(#*)\]?:(.+)\]\]/
+      /^\[\[include:(.+)\]\]/
     end
 
     def include_tag?(line)
@@ -38,7 +49,7 @@ module IncludeTag
     end
 
     def convert_tag_to_path(line)
-      @dir + line.gsub(include_tag_pattern,'\2.md').strip
+      @dir + line.gsub(include_tag_pattern,'\1.md').strip
     end
 
     def convert_tag_to_content(line)
