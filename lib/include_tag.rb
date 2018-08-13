@@ -38,7 +38,7 @@ module IncludeTag
       #
       # test if line is an include_tag
       if match = include_tag?(line)
-        content = convert_tag_to_content(line).split("\n").map{|ln| process_each_line(ln)}.join("\n")
+        content = convert_tag_to_content(line).split("\n").map{|ln| process_each_line(ln)}.join("\n") +"\n"
         reset_headings(content)
       else 
         line

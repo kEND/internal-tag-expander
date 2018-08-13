@@ -5,4 +5,3 @@
 [[include:../other/manual/body]]
 
 [//]: clear_top_level
-
