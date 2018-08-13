@@ -1,4 +1,5 @@
 require "include_tag/version"
+require "pathname"
 
 module IncludeTag
   class Expander
