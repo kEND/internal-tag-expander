@@ -1,0 +1,2 @@
+[[include:manual/body]]
+

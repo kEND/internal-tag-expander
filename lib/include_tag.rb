@@ -5,12 +5,14 @@ module IncludeTag
   class Expander
     attr_accessor :lines
     attr_reader   :outlines
-    attr_accessor :dir, :base
+    attr_accessor :dir, :base, :include_dir
     attr_accessor :top_level
 
     def initialize(file)
       @dir, @base = Pathname.new(file).split
+      @dir = @dir.realpath
       @lines = File.readlines(file)
+      @top_level = @include_dir = nil
     end
 
     def content
@@ -19,13 +21,16 @@ module IncludeTag
     end
 
     def prepare_outlines
+      # binding.pry
       @outlines = @lines.map {|line| [line, nil] }
-      @outlines.map!    {|line, top_level| process_next_nest(line) }
-      @outlines.map!    {|line, top_level| process_clear_top_level(line, top_level) }
-      @outlines.reject! {|line, top_level| line.nil? }
-      @outlines.map!    {|line, top_level| process_include_tag(line, top_level) }
-      @outlines.map!    {|a| inject_top_level(a) }
-      @outlines = @outlines.flatten.each_slice(2).to_a
+        @outlines.map!    {|line, top_level| process_next_nest(line) }
+        @outlines.map!    {|line, top_level| process_clear_top_level(line, top_level) }
+        @outlines.reject! {|line, top_level| line.nil? }
+      while @outlines.any? {|line, top_level| include_tag?(line) }
+        @outlines.map!    {|line, top_level| process_include_tag(line, top_level) }
+        @outlines.map!    {|a| inject_top_level(a) }
+        @outlines = @outlines.flatten.each_slice(2).to_a
+      end
     end
 
     def inject_top_level(a)
@@ -105,16 +110,24 @@ module IncludeTag
     end
 
     def convert_tag_to_path(line)
-      @dir + line.gsub(include_tag_pattern,'\1.md').strip
+      line.gsub(include_tag_pattern,'\1.md').strip
     end
 
     def convert_tag_to_content(line)
-      path = convert_tag_to_path(line)
-      path.exist? ? File.read(path) : line.gsub("[[include","[[NO FILEinclude")
+      relative_path = convert_tag_to_path(line)
+      path = @dir + relative_path
+      if @include_dir
+        path = @include_dir.parent + relative_path unless path.exist?
+        path = @include_dir + relative_path unless path.exist?
+      end
+
+      if path.exist?
+        @include_dir, base = path.split
+        File.read(path)
+      else
+        line.gsub("[[include","[[NO FILEinclude")
+      end
     end
 
-    def path_to_manifest
-      @dir + @base
-    end
   end
 end
