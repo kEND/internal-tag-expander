@@ -36,4 +36,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "5.10.3"
   spec.add_development_dependency "purdytest"
   spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry-byebug"
 end
