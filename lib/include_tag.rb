@@ -17,15 +17,15 @@ module IncludeTag
 
     def content
       prepare_outlines
-      @outlines.map{|i| i[0]}.join("\n")
+      @outlines.map{|i| i[0]}.join
     end
 
     def prepare_outlines
-      # binding.pry
       @outlines = @lines.map {|line| [line, nil] }
-        @outlines.map!    {|line, top_level| process_next_nest(line) }
-        @outlines.map!    {|line, top_level| process_clear_top_level(line, top_level) }
-        @outlines.reject! {|line, top_level| line.nil? }
+      @outlines.map!    {|line, top_level| process_next_nest(line) }
+      @outlines.map!    {|line, top_level| process_clear_top_level(line, top_level) }
+      @outlines.reject! {|line, top_level| line.nil? }
+
       while @outlines.any? {|line, top_level| include_tag?(line) }
         @outlines.map!    {|line, top_level| process_include_tag(line, top_level) }
         @outlines.map!    {|a| inject_top_level(a) }
@@ -75,7 +75,7 @@ module IncludeTag
 
     def process_include_tag(line, top_level)
       if match = include_tag?(line)
-        content = convert_tag_to_content(line).split("\n") # .map{|ln| process_each_line(ln)}.join("\n")
+        content = convert_tag_to_content(line).split(/^/)
         reset_headings(content, top_level)
       else
         [line, top_level]
