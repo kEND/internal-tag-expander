@@ -1,0 +1,2 @@
+# Gift Acceptance Policy (GAP)
+
