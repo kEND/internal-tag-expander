@@ -129,6 +129,7 @@ by training them commensurate with their responsibilities. (1 Cor.
 
 ## E.3 GIFT ACCEPTANCE POLICY ##
 
+
 ### Gift Acceptance Policy (GAP)
 
 ##### Introduction:
@@ -495,6 +496,7 @@ In addition, IFI will exercise the following responsibilities to donors:
 
 This policy is subject to review and revision by the Board of Directors of
 IFI at any time and without prior notice. 
+
 
 
 

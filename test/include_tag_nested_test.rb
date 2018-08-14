@@ -11,7 +11,7 @@ class IncludeTagTest < Minitest::Test
   end
 
   def test_expander_content_should_match_target
-    assert_equal File.read("../../manual.md"), @expander.content
+    assert_equal File.read("../../manual-nested.md"), @expander.content
   end
 
   def test_if_outlines_contains_any_unresolved_include_tags
