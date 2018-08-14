@@ -50,6 +50,10 @@ class IncludeTagTest < Minitest::Test
     assert_equal test_file_contents, @expander.convert_tag_to_content("[[include:manual/introduction]]")
   end
 
+  def test_expander_should_mark_a_tag_with_non_existent_file_when_attempting_to_convert_tag
+    assert_equal "[[NO FILEinclude:manual/non-existent]]", @expander.convert_tag_to_content("[[include:manual/non-existent]]")
+  end
+
   def test_should_reset_headings_returns_original_content_if_no_top_level
     assert_equal "## you are awesome", @expander.reset_headings("## you are awesome",nil)[0]
   end
@@ -70,8 +74,4 @@ class IncludeTagTest < Minitest::Test
     assert_equal test_file_contents, out
   end
 
-  def test_expander_should_take_in_a_level_and_adjust_content_for_appendix
-    skip
-    assert false
-  end
 end

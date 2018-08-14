@@ -110,7 +110,7 @@ module IncludeTag
 
     def convert_tag_to_content(line)
       path = convert_tag_to_path(line)
-      path.exist? ? File.read(path) : line.strip + 'NO FILE\n'
+      path.exist? ? File.read(path) : line.gsub("[[include","[[NO FILEinclude")
     end
 
     def path_to_manifest
