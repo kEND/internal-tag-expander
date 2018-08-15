@@ -5,7 +5,7 @@
 International Friendships’ VISION is…
 
 > God’s love extended globally in partnership with spiritually vibrant
-> international students[^1].
+> international students[^2].
 
 International Friendships’ MISSION is…
 
@@ -36,9 +36,10 @@ slogan…
 
 > Making the World Feel at Home
 
-[^1]: International students is a broad term meant to include students, visiting scholars, and their families.
+[^2]: International students is a broad term meant to include students, visiting scholars, and their families.
 
-## E.2 IFI CORE VALUES[^2] ##
+
+## E.2 IFI CORE VALUES[^3] ##
 
 > **<span class="underline">Foundation: We Value Intimacy with Christ
 > and Love for One Another</span>**
@@ -124,8 +125,8 @@ interdependently within the body of Christ. (Phil. 2:2)
 by training them commensurate with their responsibilities. (1 Cor.
 9:24-25)
 
-[^2]: revised 05/24/2017
 
+[^3]: revised 05/24/2017
 
 ## E.3 GIFT ACCEPTANCE POLICY ##
 

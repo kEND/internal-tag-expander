@@ -1,18 +1,20 @@
 require "include_tag/version"
 require "pathname"
+require "set"
 
 module IncludeTag
   class Expander
     attr_accessor :lines
     attr_reader   :outlines
-    attr_accessor :dir, :base, :include_dir
+    attr_accessor :dir, :base, :include_dirs
     attr_accessor :top_level
 
     def initialize(file)
       @dir, @base = Pathname.new(file).split
       @dir = @dir.realpath
       @lines = File.readlines(file)
-      @top_level = @include_dir = nil
+      @top_level = nil
+      @include_dirs = Set.new
     end
 
     def content
@@ -116,13 +118,18 @@ module IncludeTag
     def convert_tag_to_content(line)
       relative_path = convert_tag_to_path(line)
       path = @dir + relative_path
-      if @include_dir
-        path = @include_dir.parent + relative_path unless path.exist?
-        path = @include_dir + relative_path unless path.exist?
+      unless @include_dirs.empty?
+        until path.exist?
+          @include_dirs.each do |include_dir|
+            path = include_dir.parent + relative_path unless path.exist?
+            path = include_dir + relative_path unless path.exist?
+          end
+        end
       end
 
       if path.exist?
-        @include_dir, base = path.split
+        include_dir, base = path.split
+        @include_dirs << include_dir
         File.read(path)
       else
         line.gsub("[[include","[[NO FILEinclude")
