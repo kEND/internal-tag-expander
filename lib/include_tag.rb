@@ -9,12 +9,16 @@ module IncludeTag
     attr_accessor :dir, :base, :include_dirs
     attr_accessor :top_level
 
-    def initialize(file)
+    def initialize(file, depth = 0)
       @dir, @base = Pathname.new(file).split
       @dir = @dir.realpath
       @lines = File.readlines(file)
       @top_level = nil
       @include_dirs = Set.new
+      @project_root = @dir.parent if depth == 1
+      @project_root = @dir.parent.parent if depth == 2
+      @project_root = @dir.parent.parent.parent if depth == 3
+      @project_root = @dir if depth == 0
     end
 
     def content
@@ -117,7 +121,14 @@ module IncludeTag
 
     def convert_tag_to_content(line)
       relative_path = convert_tag_to_path(line)
-      path = @dir + relative_path
+
+      if relative_path[0] == "/" 
+        relative_path = relative_path[1..-1]
+        path = @project_root + relative_path
+      else
+        path = @dir + relative_path
+      end
+
       unless @include_dirs.empty?
         until path.exist?
           @include_dirs.each do |include_dir|
